@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title>Monitoraggio Holter Cardiaco</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+  <!-- Custom Styles -->
+  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/responsive.css" rel="stylesheet" />
+  <link href="DBcss/DBstyle.css" rel="stylesheet" />
+
+  <style>
+    .stato-connesso {
+      color: green;
+      font-weight: bold;
+    }
+
+    .stato-disconnesso {
+      color: red;
+      font-weight: bold;
+    }
+
+    #searchInput {
+      margin-bottom: 10px;
+      width: 300px;
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+
+<body class="sub_page">
+
+  <!-- Hero Area -->
+  <div class="hero_area">
+    <div class="hero_bg_box">
+      <img src="images/hero-bg.png" alt="">
+    </div>
+
+    <!-- Header -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="/">
+            <span>Monitoraggio Holter Cardiaco</span>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=""> </span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/paziente/elenco">Elenco</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+  </div>
+
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">Dashboard</h1>
+    <ol class="breadcrumb mb-4"></ol>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        DataTable Pazienti
+      </div>
+      <div class="card-body">
+        <!-- Barra di ricerca -->
+        <input type="text" id="searchInput" placeholder="Cerca paziente...">
+
+        <table class="table table-striped" id="datatablesSimple">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Cognome</th>
+              <th>Stato</th>
+              <th>Ultima Battuta</th>
+            </tr>
+          </thead>
+          <tbody id="listaPazienti">
+            <!-- I dati dei pazienti verranno inseriti qui tramite JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer_section">
+    <div class="container">
+      <div class="row justify-content-center g-2">
+        <div class="col-md-6 col-lg-2 footer_col mx-auto">
+          <div class="footer_link_box">
+            <h4>Links</h4>
+            <div class="footer_links">
+              <a class="active" href="/">Home</a>
+              <a href="/about">About</a>
+              <a href="/dashboard">Dashboard</a>
+              <a href="/paziente/elenco">Elenco</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script per caricare JSON e ricerca -->
+  <script>
+    const fileJSON = 'data/pazienti.json';
+
+    fetch(fileJSON)
+      .then(response => {
+        if (!response.ok) throw new Error("Errore nel caricamento del JSON");
+        return response.json();
+      })
+      .then(data => {
+        const lista = document.getElementById('listaPazienti');
+        data.forEach(paziente => {
+          const tr = document.createElement('tr');
+
+          tr.innerHTML = `
+            <td>${paziente.id}</td>
+            <td>${paziente.nome}</td>
+            <td>${paziente.cognome}</td>
+            <td class="${paziente.stato === 'connesso' ? 'stato-connesso' : 'stato-disconnesso'}">
+              ${paziente.stato}
+            </td>
+            <td>${paziente.ultimaBattuta}</td>
+          `;
+
+          lista.appendChild(tr);
+        });
+      })
+      .catch(error => console.error("Errore:", error));
+
+    // Funzione di ricerca
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('keyup', function () {
+      const filter = searchInput.value.toLowerCase();
+      const rows = document.querySelectorAll('#listaPazienti tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+      });
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "nome": "Ali",
+    "cognome": "Jriwat",
+    "stato": "connesso",
+    "ultimaBattuta": 72
+  },
+  {
+    "id": 2,
+    "nome": "Enrico",
+    "cognome": "Fraternale",
+    "stato": "disconnesso",
+    "ultimaBattuta": 65
+  },
+  {
+    "id": 3,
+    "nome": "Laura",
+    "cognome": "Bianchi",
+    "stato": "connesso",
+    "ultimaBattuta": 80
+  },
+  {
+    "id": 4,
+    "nome": "Marco",
+    "cognome": "Rossi",
+    "stato": "disconnesso",
+    "ultimaBattuta": 58
+  },
+  {
+    "id": 5,
+    "nome": "Sara",
+    "cognome": "Verdi",
+    "stato": "connesso",
+    "ultimaBattuta": 90
+  },
+  {
+    "id": 6,
+    "nome": "Luca",
+    "cognome": "Neri",
+    "stato": "disconnesso",
+    "ultimaBattuta": 45
+  },
+  {
+    "id": 7,
+    "nome": "Giulia",
+    "cognome": "Ferrari",
+    "stato": "connesso",
+    "ultimaBattuta": 77
+  },
+  {
+    "id": 8,
+    "nome": "Davide",
+    "cognome": "Galli",
+    "stato": "disconnesso",
+    "ultimaBattuta": 60
+  }
+]
+
+
