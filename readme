@@ -1,11 +1,11 @@
 Componenti del gruppo [Enrico Fraternale, Ali Jriwat]
 
-Definizione del problema
+1. Definizione del problema
 
 Descrizione dello scopo della relazione e una panoramica delle varie componenti in gioco.
 Lo scopo della relazione è progettare dei progetti che monitorano il monitoraggio di un holter cardiaco, in questa relazione mostreremo come è strutturata la front-end, la back-end, e la gestione dei dati cardiaci.
 
-Panoramica del progetto
+2. Panoramica del progetto
 
 * Frontend: è l'interfaccia web a cui accedono gli utenti, ed è strutturato utilizzando un template HTML/CSS/JS. Le pagine sono contenute nella cartella public  e includono:
 
@@ -42,7 +42,7 @@ Panoramica del progetto
 
     - ultimaBattuta: La frequenza cardiaca (in battiti per minuto - BPM) registrata più di recente.
 
-Note sull'utilizzo del Template
+3. Note sull'utilizzo del Template
 
 Il sito è stato sviluppato partendo da un template web preesistente. Questa scelta ha permesso di concentrare le risorse sullo sviluppo delle funzionalità chiave del Backend e sulla logica di visualizzazione dei dati nella Dashboard, riducendo al minimo il tempo dedicato alla progettazione estetica da zero.
 
@@ -54,13 +54,35 @@ L'integrazione del template ha richiesto le seguenti modifiche strutturali:
 
 * Inclusione di Componenti Funzionali: Sono stati aggiunti elementi specifici come la barra di ricerca (#searchInput) e la logica di visualizzazione dello stato (stato-connesso/stato-disconnesso) per trasformare il template statico in uno strumento di monitoraggio funzionale.
 
-Conclusione
+4. Criticità da discutere
+
+Durante lo sviluppo del progetto, sono emerse alcune sfide tecniche, in particolare nell'interazione tra Backend e Frontend.
+
+* Gestione delle Route e del Server Express
+
+La prima criticità è stata la corretta gestione del server Express e l'organizzazione delle route in server.js. È stato fondamentale:
+
+    - Assicurare il corretto servizio dei file statici (app.use(express.static("public"))).
+
+    - Implementare la logica per la gestione del file system (FS) (fs.promises) per leggere e scrivere i dati in modo asincrono su pazienti.json, garantendo che il server non si blocchi durante le operazioni I/O.
+
+    - Implementare la logica per la route dinamica (/paziente/:id).
+
+* Implementazione della Fetch in Dashboard
+
+L'aspetto più ostico ha riguardato l'implementazione della logica di recupero e visualizzazione dei dati nella dashboard.html. Inizialmente, la corretta integrazione dei dati nella tabella non avveniva in modo affidabile, non inserendo i pazienti. La soluzione ha richiesto un'attenta verifica di diversi punti:
+
+    - Assicurarsi che il percorso della fetch (const fileJSON = 'data/pazienti.json';) fosse corretto e che il server servisse correttamente la cartella data tramite la route statica (app.use('/data', express.static('data'));).
+
+    - Verificare l'iterazione sui dati JSON (data.forEach(paziente => ...) ) e la corretta creazione degli elementi della tabella (<tr>) e l'aggiunta alla tbody (listaPazienti.appendChild(tr);), includendo la logica per colorare lo stato (stato-connesso/stato-disconnesso).
+
+5. Conclusione
 
 Il progetto di Monitoraggio Holter Cardiaco dimostra l'integrazione tra un Frontend strutturato e funzionale, un Backend sviluppato con Node.js ed Express per la gestione delle rotte e l'elaborazione dei dati, e un sistema di Gestione Dati semplice (file JSON).
 
 Questo sistema costituisce un concept per un'applicazione sanitaria di analisi, che può essere in futuro ampliata aggiungendo nuove feature, ad esempio un sistema di autenticazione utente o un integrazione con database. 
 
-Setup e Avvio
+6. Setup e Avvio
 
 * Per avviare il progetto, assicurarsi di avere Node.js installato.
 
