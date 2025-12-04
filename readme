@@ -1,0 +1,73 @@
+Componenti del gruppo [Enrico Fraternale, Ali Jriwat]
+
+Definizione del problema
+
+Descrizione dello scopo della relazione e una panoramica delle varie componenti in gioco.
+Lo scopo della relazione è progettare dei progetti che monitorano il monitoraggio di un holter cardiaco, in questa relazione mostreremo come è strutturata la front-end, la back-end, e la gestione dei dati cardiaci.
+
+Panoramica del progetto
+
+* Frontend: è l'interfaccia web a cui accedono gli utenti, ed è strutturato utilizzando un template HTML/CSS/JS. Le pagine sono contenute nella cartella public  e includono:
+
+    - Home (index.html): Pagina di presentazione del servizio di assistenza sanitaria e monitoraggio Holter.
+
+    - About (about.html): Dettaglia cos'è il monitoraggio Holter cardiaco e descrive l'obiettivo della piattaforma.
+
+    - Dashboard (dashboard.html): Mostra la DataTable Pazienti e permette la consultazione in tempo reale  dei  dati. Implementa una funzionalità di ricerca in JavaScript per filtrare i pazienti. I dati vengono caricati dinamicamente tramite una fetch al file pazienti.json.
+
+    - Elenco (/paziente/elenco): Endpoint gestito dal backend che restituisce l'elenco completo dei pazienti in formato JSON.
+
+    - Pagina 404 (404.html): Gestisce le richieste per pagine non trovate
+
+* Backend: l Backend è realizzato con Node.js utilizzando il framework Express nel file server.js. Il server gestisce le pagine tramite le seguenti route HTTP:
+
+
+    - GET,"/, /dashboard, /about",Restituisce le rispettive pagine HTML statiche.
+
+    - GET,/paziente/elenco,Restituisce l'elenco completo dei pazienti letto da pazienti.json in formato JSON (status 200).
+
+    - GET,/paziente/:id,"Restituisce i dati del paziente corrispondente all'ID richiesto (status 200). Se l'ID non è trovato, restituisce la pagina 404 (status 404)."
+
+    - POST,/paziente,"Aggiunge un nuovo paziente ai dati. Il nuovo paziente viene creato con id progressivo, stato: ""connesso"", e i dati nome, cognome, ultimaBattuta presi dai query parametri. Il file pazienti.json viene aggiornato."
+
+    - USE,"app.use((req, res) => ...)",Cattura tutte le richieste non gestite e invia la pagina 404.
+
+* Gestione Dati: i pazienti sono memorizzati nel file pazienti.json. Questo file JSON funge da archivio dati e contiene informazioni essenziali per ogni paziente monitorato, tra cui:
+
+    - id: Identificativo univoco del paziente.
+
+    - nome e cognome: Dati anagrafici.
+
+    - stato: Indica se il dispositivo è "connesso" (green) o "disconnesso" (red).
+
+    - ultimaBattuta: La frequenza cardiaca (in battiti per minuto - BPM) registrata più di recente.
+
+Note sull'utilizzo del Template
+
+Il sito è stato sviluppato partendo da un template web preesistente. Questa scelta ha permesso di concentrare le risorse sullo sviluppo delle funzionalità chiave del Backend e sulla logica di visualizzazione dei dati nella Dashboard, riducendo al minimo il tempo dedicato alla progettazione estetica da zero.
+
+L'integrazione del template ha richiesto le seguenti modifiche strutturali:
+
+* Adattamento della Navigazione: Il menu di navigazione è stato personalizzato per includere le pagine specifiche del progetto: Home, About, Dashboard, Elenco.
+
+* Integrazione della Logica Dati: La pagina dashboard.html è stata arricchita con codice JavaScript per recuperare e popolare dinamicamente la tabella dei pazienti tramite una chiamata AJAX/Fetch al file pazienti.json.
+
+* Inclusione di Componenti Funzionali: Sono stati aggiunti elementi specifici come la barra di ricerca (#searchInput) e la logica di visualizzazione dello stato (stato-connesso/stato-disconnesso) per trasformare il template statico in uno strumento di monitoraggio funzionale.
+
+Conclusione
+
+Il progetto di Monitoraggio Holter Cardiaco dimostra l'integrazione tra un Frontend strutturato e funzionale, un Backend sviluppato con Node.js ed Express per la gestione delle rotte e l'elaborazione dei dati, e un sistema di Gestione Dati semplice (file JSON).
+
+Questo sistema costituisce un concept per un'applicazione sanitaria di analisi, che può essere in futuro ampliata aggiungendo nuove feature, ad esempio un sistema di autenticazione utente o un integrazione con database. 
+
+Setup e Avvio
+
+* Per avviare il progetto, assicurarsi di avere Node.js installato.
+
+* Aprire il terminale nella cartella principale del progetto.
+
+* Installare le dipendenze (se presenti e non incluse, es. npm install express).
+
+* Avviare il server eseguendo il comando: node server.js
+
+* Aprire il browser e navigare all'indirizzo indicato dal server: http://localhost:3000
