@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
+
 const port = 3000;
+
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -31,21 +33,32 @@ app.get('/about', (req, res) => {
 
 // LISTA PAZIENTI
 app.get('/paziente/elenco', async (req, res) => {
-  const filePazienti = path.join(__dirname, 'data', 'pazienti.json');
-  const data = await fs.readFile(filePazienti);
-  res.status(200).json(JSON.parse(data));
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'data', 'pazienti.json'));
+    res.status(200).json(JSON.parse(data));
+  } catch (err) {
+    res.status(500).json({ errore: "Errore durante la lettura dei pazienti" });
+  }
 });
+
 
 // PAZIENTE PER ID
 app.get('/paziente/:id', async (req, res) => {
-    const paziente = await getPazienteId(req.params.id);
+  try {
+    const data = await fs.readFile(path.join(__dirname, 'data', 'pazienti.json'));
+    const pazienti = JSON.parse(data);
+    const paziente = pazienti.find(p => p.id == req.params.id);
 
     if (paziente) {
-        res.status(200).json(paziente);
+      res.status(200).json(paziente);
     } else {
-        res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+      res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
     }
+  } catch (err) {
+    res.status(500).json({ errore: "Errore durante la ricerca del paziente" });
+  }
 });
+
 
 // POST — AGGIUNTA PAZIENTE
 app.post('/paziente', async (req, res) => {
@@ -76,4 +89,3 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server attivo su http://localhost:${port}`);
 });
-
